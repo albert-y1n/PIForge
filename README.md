@@ -2,7 +2,7 @@
 
 [**Code**](https://github.com/albert-y1n/PIForge) · [**Attacker checkpoints**](https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4) · [**PISmith paper**](https://arxiv.org/abs/2603.13026)
 
-PIForge brings the [PISmith](https://github.com/albert-y1n/PISmith/tree/dev) RL prompt-injection framework and the curriculum and transfer training workflows from [Climbing the Hill](https://github.com/albert-y1n/Climb_Hill_Prompt_Injection) into one repository. It covers attacker training and evaluation on PIArena, AgentDojo, AgentDyn, InjecAgent, and IPI Arena OS. The PISmith paper reports the research results below; the curriculum scripts provide additional AgentDyn and AgentDojo workflows.
+PIForge brings the [PISmith](https://github.com/albert-y1n/PISmith/tree/dev) RL prompt-injection framework and the [Climbing the Hill curriculum and transfer workflows](docs/curriculum.md) into one repository. It covers attacker training and evaluation on PIArena, AgentDojo, AgentDyn, InjecAgent, and IPI Arena OS. The PISmith paper reports the research results below; the curriculum scripts provide additional AgentDyn and AgentDojo workflows.
 
 ## News
 
@@ -52,7 +52,7 @@ bash scripts/train_agentdyn_transfer.sh \
   checkpoints/agentdyn_curriculum/nano-luna-terra/stage_3_gpt-5.6-terra/checkpoint-XXX
 
 # Evaluate a released attacker against an API target
-bash scripts/evaluate.sh agentdyn \
+bash scripts/evaluate.sh agentdojo \
   AlbertYin/agentdojo_attacker_qwen3_4b_muse_spark openai muse-spark-1.2
 ```
 
