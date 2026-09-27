@@ -1,14 +1,24 @@
-# Curriculum RL and transfer training
+# Climbing the Hill: curriculum RL for prompt injection red teaming
 
-These workflows are integrated from Climbing the Hill into PIForge and reproduce the AgentDyn and AgentDojo curriculum experiments.
+The Climbing the Hill paper studies a cold-start
+problem in prompt injection RL: an initial attacker can receive no successful
+attacks against a frontier target. The method trains one attacker across a
+sequence of targets, using each checkpoint to initialize the next stage. A
+candidate next target should yield nonzero attack success before starting the
+new RL stage, so the attacker has a learning signal.
+
+This guide covers the supplied AgentDyn and AgentDojo curriculum and transfer
+scripts. The preset recipes implement the studied target sequences. For a custom
+sequence, assess candidate targets before choosing the next stage; the scripts
+run the sequence you specify and do not select targets automatically.
 
 ## Environment Setup
 
 The code has been tested with Python 3.10 and CUDA 12.x.
 
 ```bash
-conda create -n climb-hill python=3.10 -y
-conda activate climb-hill
+conda create -n piforge python=3.10 -y
+conda activate piforge
 pip install -r requirements.txt
 ```
 
