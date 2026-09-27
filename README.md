@@ -4,56 +4,32 @@
 
 <p align="center">
   💻 <a href="https://github.com/albert-y1n/PIForge">Code</a> ·
-  📜 <a href="https://arxiv.org/abs/2603.13026">PISmith Paper</a> ·
-  📖 <a href="docs/curriculum.md">Climbing the Hill Guide</a> ·
-  🤗 <a href="https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4">Models</a>
+  🤗 <a href="https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4">Models</a> ·
+  📜 <a href="#papers">Papers</a> ·
+  📓 <a href="docs/training.md">Training Guide</a>
 </p>
 
-PIForge is the shared codebase for **[PISmith](https://arxiv.org/abs/2603.13026)** and **Climbing the Hill**. It trains attacker language models to discover prompt injection failures through black-box feedback, and provides benchmark adapters, evaluation scripts, curriculum training workflows, and released checkpoints.
+---
+
+PIForge is the codebase for **[PISmith](https://arxiv.org/abs/2603.13026)** and **Climbing the Hill**. It trains attacker language models through reinforcement learning against prompt injection defenses. The same training core supports single-target RL and target curricula that move from easier targets to harder ones. We provide benchmark integrations, launch scripts, evaluation tools, and [released attacker models](https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4).
+
+PISmith sustains exploration and learns from rare successful attacks; Climbing the Hill uses those same RL components across a sequence of targets so that a stronger target can be reached from a trained attacker.
 
 ## ✨ News
 
-- **2026.07** — [PISmith](https://arxiv.org/abs/2603.13026) was accepted to [COLM 2026](https://colm.eventhosts.cc/Conferences/2026/AcceptedPapers).
+- **2026.07** — [PISmith](https://arxiv.org/abs/2603.13026) was accepted to COLM 2026.
 
-## 💡 Overview
+## What's here
 
-The two works address different training regimes. **PISmith** learns from rare successful attacks against prompt injection defenses by maintaining exploration and weighting scarce successes. **Climbing the Hill** addresses a harder cold start: when an initial attacker succeeds against a frontier target so rarely that direct RL yields no useful reward. It trains the same attacker across a sequence of target models, using each stage to warm-start the next.
-
-Both works use the same training core in [`train.py`](train.py) and [`core/`](core/). The repository also includes benchmark integrations for PIArena, InjecAgent, AgentDojo, AgentDyn, and IPI Arena OS.
-
-## 🛡️ PISmith
-
-**[PISmith: Reinforcement Learning-based Red Teaming for Prompt Injection Defenses](https://arxiv.org/abs/2603.13026)** trains an attacker against a black-box target using reinforcement learning. Its adaptive entropy regularization sustains exploration when rewards are sparse, while dynamic advantage weighting helps the attacker learn from rare successful injections.
-
-- Training and evaluation recipes: [`scripts/`](scripts/) and the [PISmith guide](docs/pismith.md)
-- Shared RL implementation: [`train.py`](train.py), [`core/trainer.py`](core/trainer.py), and [`benchmarks/`](benchmarks/)
-
-## 🧗 Climbing the Hill
-
-**Climbing the Hill: Prompt Injection Red-Teaming Against Frontier Models with Curriculum Reinforcement Learning** builds on PISmith to tackle the zero-reward cold start against frontier targets. It trains a single attacker across progressively stronger target models, initializing each stage from the preceding checkpoint. The paper uses nonzero pre-stage attack success as the criterion for choosing a target that can provide a learning signal; the supplied scripts include its target curriculum and transfer workflows.
-
-- Stage and curriculum launchers: [`scripts/train_stage.sh`](scripts/train_stage.sh), [`scripts/train_curriculum.sh`](scripts/train_curriculum.sh), and [`scripts/train_agentdyn_curriculum.sh`](scripts/train_agentdyn_curriculum.sh)
-- Transfer and evaluation: [`scripts/train_agentdyn_transfer.sh`](scripts/train_agentdyn_transfer.sh) and [`scripts/evaluate.sh`](scripts/evaluate.sh)
-- Reproduction instructions: [curriculum guide](docs/curriculum.md)
-
-## 🤗 Released Attackers
-
-The [PIForge Hugging Face collection](https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4) groups all released attacker checkpoints. The [model catalog](checkpoints/models.json) and [download guide](checkpoints/README.md) provide direct links. Full weights are hosted on Hugging Face.
-
-| Benchmark | Target | Attacker checkpoint |
+| Component | Where | Purpose |
 |---|---|---|
-| PIArena | Meta-SecAlign | [piarena_attacker_qwen3_4b_secalign](https://huggingface.co/AlbertYin/piarena_attacker_qwen3_4b_secalign) |
-| PIArena | Qwen3-4B | [piarena_attacker_qwen3_4b_none](https://huggingface.co/AlbertYin/piarena_attacker_qwen3_4b_none) |
-| InjecAgent | Meta-SecAlign | [injecagent_attacker_qwen3_4b_secalign](https://huggingface.co/AlbertYin/injecagent_attacker_qwen3_4b_secalign) |
-| AgentDojo/AgentDyn  | GPT-4o-mini | [agentdojo_attacker_qwen3_4b_4o_mini](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_4o_mini) |
-| AgentDojo/AgentDyn  | GPT-5-nano | [agentdojo_attacker_qwen3_4b_5_nano](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_5_nano) |
-| AgentDojo/AgentDyn  | GPT-5.6-Luna | [agentdojo_attacker_qwen3_4b_5.6_luna](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_5.6_luna) |
-| AgentDojo/AgentDyn  | GPT-5.6-Terra | [agentdojo_attacker_qwen3_4b_5.6_terra](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_5.6_terra) |
-| AgentDojo/AgentDyn  | Muse-Spark | [agentdojo_attacker_qwen3_4b_muse_spark](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_muse_spark) |
+| Benchmarks | [`benchmarks/`](benchmarks/) | Prompt injection tasks and reward adapters for PIArena, InjecAgent, AgentDojo, AgentDyn, and IPI Arena OS. |
+| RL training | [`train.py`](train.py), [`core/`](core/), [`configs/`](configs/) | Shared attacker training implementation and benchmark configurations. |
+| Recipes and evaluation | [`scripts/`](scripts/), [`eval/`](eval/) | Single-target and curriculum launchers, checkpoint transfer, and evaluation. |
 
-## 🚀 Getting Started
+## Quickstart
 
-Create a Python 3.10 environment and install the dependencies:
+Run commands from the repository root. Training requires Python 3.10 and GPUs; API targets also require the relevant provider key.
 
 ```bash
 git clone https://github.com/albert-y1n/PIForge.git
@@ -63,18 +39,65 @@ conda activate piforge
 pip install -r requirements.txt
 ```
 
-Choose the workflow for the paper you want to reproduce:
+For AgentDyn experiments, install [AgentDyn](https://github.com/SaFo-Lab/AgentDyn) separately:
 
 ```bash
-# PISmith: train an attacker on AgentDojo
-bash scripts/train_agentdojo.sh gpt4o-mini workspace "0,1,2,3"
+git clone https://github.com/SaFo-Lab/AgentDyn.git
+pip install -e AgentDyn --no-deps
+export OPENAI_API_KEY="your-openai-api-key"
+```
 
-# Climbing the Hill: train across a target curriculum on AgentDyn
+### Train an attacker
+
+The PISmith single-target recipes cover PIArena and InjecAgent. For GPT-4o-mini and GPT-5-nano on AgentDojo/AgentDyn, the recommended training set is the **AgentDyn `github` subset**; `train_agentdyn.sh` uses it by default. PIArena and InjecAgent use their own benchmark datasets.
+
+| Task and target | Training recipe |
+|---|---|
+| PIArena · Meta-SecAlign | `bash scripts/train_piarena.sh secalign` |
+| PIArena · no defense | `bash scripts/train_piarena.sh none` |
+| InjecAgent · Meta-SecAlign | `bash scripts/train_injecagent.sh vllm` |
+| AgentDojo/AgentDyn · GPT-4o-mini | `bash scripts/train_agentdyn.sh gpt4o-mini` |
+| AgentDojo/AgentDyn · GPT-5-nano | `bash scripts/train_agentdyn.sh gpt5-nano` |
+
+For GPT-5.6-Luna and GPT-5.6-Terra, train across target stages with curriculum RL. These presets also use the AgentDyn `github` subset:
+
+```bash
+TRAIN_GPUS=0,1,2,3 bash scripts/train_agentdyn_curriculum.sh nano-luna
 TRAIN_GPUS=0,1,2,3 bash scripts/train_agentdyn_curriculum.sh nano-luna-terra
 ```
 
-Set the relevant target API key before training. AgentDyn workflows also require a separate AgentDyn install. The [PISmith guide](docs/pismith.md) and [curriculum guide](docs/curriculum.md) cover setup, target selection, evaluation, and overrides.
+Each stage initializes the attacker from the previous stage's checkpoint. The [training guide](docs/training.md) covers other curricula, native AgentDojo suites, target setup, and evaluation.
 
-## 📄 License
+### Evaluate an attacker
+
+```bash
+EVAL_SUITES=github ATTACKER_GPUS=0 \
+  bash scripts/evaluate.sh agentdyn \
+  checkpoints/agentdyn/checkpoint-XXX openai gpt-5-nano
+```
+
+PIArena and InjecAgent have benchmark-specific evaluation launchers in [`scripts/`](scripts/). See the [training guide](docs/training.md) for examples and options.
+
+## Released attackers
+
+All released weights are in the [PIForge Hugging Face collection](https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4). The [model catalog](checkpoints/models.json) lists the model IDs; weights are hosted on Hugging Face.
+
+| Benchmark | Target | Attacker checkpoint |
+|---|---|---|
+| PIArena | Meta-SecAlign | [piarena_attacker_qwen3_4b_secalign](https://huggingface.co/AlbertYin/piarena_attacker_qwen3_4b_secalign) |
+| PIArena | Qwen3-4B | [piarena_attacker_qwen3_4b_none](https://huggingface.co/AlbertYin/piarena_attacker_qwen3_4b_none) |
+| InjecAgent | Meta-SecAlign | [injecagent_attacker_qwen3_4b_secalign](https://huggingface.co/AlbertYin/injecagent_attacker_qwen3_4b_secalign) |
+| AgentDojo/AgentDyn | GPT-4o-mini | [agentdojo_attacker_qwen3_4b_4o_mini](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_4o_mini) |
+| AgentDojo/AgentDyn | GPT-5-nano | [agentdojo_attacker_qwen3_4b_5_nano](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_5_nano) |
+| AgentDojo/AgentDyn | GPT-5.6-Luna | [agentdojo_attacker_qwen3_4b_5.6_luna](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_5.6_luna) |
+| AgentDojo/AgentDyn | GPT-5.6-Terra | [agentdojo_attacker_qwen3_4b_5.6_terra](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_5.6_terra) |
+| AgentDojo/AgentDyn | Muse-Spark | [agentdojo_attacker_qwen3_4b_muse_spark](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_muse_spark) |
+
+## Papers
+
+- [PISmith: Reinforcement Learning-based Red Teaming for Prompt Injection Defenses](https://arxiv.org/abs/2603.13026)
+- Climbing the Hill: Prompt Injection Red-Teaming Against Frontier Models with Curriculum Reinforcement Learning
+
+## License
 
 PIForge is released under the [MIT License](LICENSE).

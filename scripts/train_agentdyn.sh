@@ -24,7 +24,7 @@ export PYTHONPATH="${PROJECT_ROOT}/..:${PYTHONPATH:-}"
 export OPENAI_API_KEY="${OPENAI_API_KEY:-}"
 
 TARGET_TYPE=${1:-gpt4o-mini}
-SUITES=${2:-workspace}
+SUITES=${2:-github}
 TRAIN_GPUS=${3:-"0,1,2,3"}
 
 TARGET_PORT=${TARGET_PORT:-8000}

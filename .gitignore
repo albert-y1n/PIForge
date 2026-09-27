@@ -47,3 +47,6 @@ Thumbs.db
 
 # Backup files
 *.bak
+
+# Manuscript files stay outside the repository.
+*.pdf
