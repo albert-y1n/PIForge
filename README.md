@@ -78,14 +78,14 @@ OUTPUT_DIR=checkpoints/muse_spark \
   bash scripts/train.sh agentdyn muse-spark-1.2
 ```
 
-Evaluate a released Hugging Face model directly. vLLM loads the model ID; no separate download step is needed:
+Evaluate a released Hugging Face model directly.
 
 ```bash
 bash scripts/eval.sh agentdyn AlbertYin/agentdojo_attacker_qwen3_4b_5_nano gpt5-nano 10
 bash scripts/eval.sh agentdyn AlbertYin/agentdojo_attacker_qwen3_4b_5.6_terra gpt-5.6-terra 10
 ```
 
-For native AgentDojo suites, choose `agentdojo` and set `TRAIN_SUITES` or `EVAL_SUITES` to `workspace`, `banking`, `travel`, or `slack`:
+For AgentDojo suites, choose `agentdojo` and set `TRAIN_SUITES` or `EVAL_SUITES` to `workspace`, `banking`, `travel`, or `slack`:
 
 ```bash
 TRAIN_SUITES=workspace bash scripts/train.sh agentdojo gpt4o-mini
