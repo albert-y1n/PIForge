@@ -12,7 +12,6 @@
 
 PIForge is the codebase for **[PISmith](https://arxiv.org/abs/2603.13026)** and **Climbing the Hill**. It trains attacker language models with reinforcement learning against prompt injection defenses. PISmith sustains exploration and learns from rare successful attacks; Climbing the Hill uses the same training core across a curriculum of increasingly difficult targets.
 
-The former PISmith `main` is preserved on the [`old` branch](https://github.com/albert-y1n/PIForge/tree/old).
 
 ## ✨ News
 
