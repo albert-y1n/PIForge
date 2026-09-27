@@ -20,7 +20,7 @@ PIForge is the shared codebase for **[PISmith](https://arxiv.org/abs/2603.13026)
 
 | Component | Where | Purpose |
 |---|---|---|
-| Benchmarks | [`benchmarks/`](benchmarks/) | PIArena, InjecAgent, AgentDojo, AgentDyn, and IPI Arena OS adapters. |
+| Benchmarks | [`benchmarks/`](benchmarks/) | PIArena, InjecAgent, AgentDojo, AgentDyn, and IPI Arena. |
 | Training core | [`train.py`](train.py), [`core/`](core/), [`configs/`](configs/) | Shared RL trainer and benchmark configurations. |
 | Entry points | [`scripts/`](scripts/), [`eval/`](eval/) | One training script, one curriculum script, and one evaluation script. |
 
