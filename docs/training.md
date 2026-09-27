@@ -128,5 +128,3 @@ EVAL_SUITES=github ATTACKER_GPUS=0 NUM_SAMPLES=10 \
 For native AgentDojo evaluation, pass `agentdojo` and set `EVAL_SUITES` to an AgentDojo suite. OpenRouter and other OpenAI-compatible providers can be selected with `TARGET_API_KEY_ENV` and `TARGET_BASE_URL`. Local vLLM targets can use `TARGET_URL` to point to an existing server.
 
 Results are written to `eval_results/`, including pass@k, sample-level ASR, and per-case records. `EVAL_INJ`, `EVAL_USER`, `NUM_SAMPLES`, `MAX_WORKERS`, and `OUTPUT_DIR` control evaluation scope and output.
-
-The repository also includes [`scripts/train_ipi_arena_os.sh`](../scripts/train_ipi_arena_os.sh) and [`scripts/eval_ipi_arena_os.sh`](../scripts/eval_ipi_arena_os.sh) for IPI Arena OS. Browser behaviors require `playwright install chromium`.
