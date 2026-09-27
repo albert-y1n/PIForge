@@ -16,6 +16,8 @@ def main():
     parser.add_argument("--attacker_base_model", default=None)
     parser.add_argument("--attacker_server_url", default=None,
                         help="vLLM URL for attacker (if externally served)")
+    parser.add_argument("--attacker_served_model", default=None,
+                        help="Model name exposed by the attacker vLLM server")
 
     parser.add_argument("--target_model", default="gpt-4o-mini-2024-07-18")
     parser.add_argument("--target_provider", default="openai")
@@ -74,6 +76,7 @@ def main():
         target_max_tokens=args.target_max_tokens,
         target_defense=args.target_defense,
         attacker_server_url=args.attacker_server_url,
+        attacker_served_model=args.attacker_served_model,
         attacker_base_model=args.attacker_base_model,
         format_prompt=args.format_prompt,
         max_tokens=args.max_tokens,

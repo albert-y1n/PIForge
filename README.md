@@ -1,6 +1,62 @@
-# PISmith: Reinforcement Learning-based Red Teaming for Prompt Injection Defenses(COLM 2026)
+# PIForge: An Open Framework for RL-based Prompt Injection Red Teaming
 
-This is an official implementation of [**PISmith: Reinforcement Learning-based Red Teaming for Prompt Injection Defenses**](https://arxiv.org/abs/2603.13026)
+[**Code**](https://github.com/albert-y1n/PIForge) · [**Attacker checkpoints**](https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4) · [**PISmith paper**](https://arxiv.org/abs/2603.13026)
+
+PIForge brings the [PISmith](https://github.com/albert-y1n/PISmith/tree/dev) RL prompt-injection framework and the curriculum and transfer training workflows from [Climbing the Hill](https://github.com/albert-y1n/Climb_Hill_Prompt_Injection) into one repository. It covers attacker training and evaluation on PIArena, AgentDojo, AgentDyn, InjecAgent, and IPI Arena OS. The PISmith paper reports the research results below; the curriculum scripts provide additional AgentDyn and AgentDojo workflows.
+
+## News
+
+- **2026.07** — [PISmith](https://arxiv.org/abs/2603.13026) was accepted to [COLM 2026](https://colm.eventhosts.cc/Conferences/2026/AcceptedPapers).
+
+## What's here
+
+| Area | Entry point | Purpose |
+|---|---|---|
+| Training | `train.py`, `configs/`, `scripts/train_*.sh` | RL attacker training across five benchmarks |
+| Curriculum | `scripts/train_curriculum.sh`, `scripts/train_agentdyn_curriculum.sh`, `scripts/train_agentdyn_transfer.sh` | Sequential targets and transfer training |
+| Evaluation | `eval/`, `scripts/eval_*.sh`, `scripts/evaluate.sh` | Benchmark and unified AgentDyn/AgentDojo evaluation |
+| Checkpoints | `checkpoints/models.json`, `scripts/download_attacker.py` | Released attacker catalog and download tool |
+
+## Released attacker checkpoints
+
+All public attacker models are grouped in the [PIForge collection](https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4). The GitHub [checkpoint catalog](checkpoints/README.md) and [machine-readable manifest](checkpoints/models.json) list every model. Weights stay on Hugging Face because each full checkpoint is about 8 GB; the repository provides direct links and a download tool.
+
+| Benchmark | Target | Hugging Face model |
+|---|---|---|
+| PIArena | Meta-SecAlign | [piarena_attacker_qwen3_4b_secalign](https://huggingface.co/AlbertYin/piarena_attacker_qwen3_4b_secalign) |
+| PIArena | No defense | [piarena_attacker_qwen3_4b_none](https://huggingface.co/AlbertYin/piarena_attacker_qwen3_4b_none) |
+| AgentDojo | GPT-4o-mini | [agentdojo_attacker_qwen3_4b_4o_mini](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_4o_mini) |
+| AgentDojo | GPT-5-nano | [agentdojo_attacker_qwen3_4b_5_nano](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_5_nano) |
+| InjecAgent | Meta-SecAlign | [injecagent_attacker_qwen3_4b_secalign](https://huggingface.co/AlbertYin/injecagent_attacker_qwen3_4b_secalign) |
+| AgentDojo | GPT-5.6-Luna | [agentdojo_attacker_qwen3_4b_5.6_luna](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_5.6_luna) |
+| AgentDojo | GPT-5.6-Terra | [agentdojo_attacker_qwen3_4b_5.6_terra](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_5.6_terra) |
+| AgentDojo | GPT-5.6-Terra (dev) | [agentdojo_attacker_qwen3_4b_5.6_terra_dev](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_5.6_terra_dev) |
+| AgentDojo | Muse-Spark | [agentdojo_attacker_qwen3_4b_muse_spark](https://huggingface.co/AlbertYin/agentdojo_attacker_qwen3_4b_muse_spark) |
+
+Download one model, or use `--all` for the full catalog:
+
+```bash
+python -m pip install huggingface_hub
+python scripts/download_attacker.py agentdojo_attacker_qwen3_4b_muse_spark
+python scripts/download_attacker.py --list
+```
+
+## Curriculum training and unified evaluation
+
+```bash
+# AgentDyn: GPT-5-nano → GPT-5.6-Luna → GPT-5.6-Terra
+TRAIN_GPUS=0,1,2,3 bash scripts/train_agentdyn_curriculum.sh nano-luna-terra
+
+# Train another stage from the final Terra checkpoint
+bash scripts/train_agentdyn_transfer.sh \
+  checkpoints/agentdyn_curriculum/nano-luna-terra/stage_3_gpt-5.6-terra/checkpoint-XXX
+
+# Evaluate a released attacker against an API target
+bash scripts/evaluate.sh agentdyn \
+  AlbertYin/agentdojo_attacker_qwen3_4b_muse_spark openai muse-spark-1.2
+```
+
+Set `OPENAI_API_KEY` for OpenAI-compatible targets, or use `TARGET_PROVIDER=openrouter` with `OPENROUTER_API_KEY` when training through OpenRouter. See [the curriculum guide](docs/curriculum.md) for recipes, overrides, local targets, and evaluation modes.
 
 ---
 

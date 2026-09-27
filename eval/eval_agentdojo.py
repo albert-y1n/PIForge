@@ -202,6 +202,7 @@ def evaluate_agentdojo(
     target_max_tokens: int = 32768,
     target_defense: Optional[str] = None,
     attacker_server_url: Optional[str] = None,
+    attacker_served_model: Optional[str] = None,
     attacker_base_model: Optional[str] = None,
     format_prompt: bool = True,
     max_tokens: int = 4096,
@@ -294,10 +295,10 @@ def evaluate_agentdojo(
             attacker_client = OpenAI(base_url=attacker_server_url, api_key="EMPTY")
             try:
                 models = attacker_client.models.list()
-                attacker_model_name = models.data[0].id
+                attacker_model_name = attacker_served_model or models.data[0].id
                 print(f"\nvLLM serving model: {attacker_model_name}")
             except Exception:
-                attacker_model_name = attacker_model
+                attacker_model_name = attacker_served_model or attacker_model
             local_attacker = None
             local_tokenizer = None
         else:
@@ -787,6 +788,8 @@ def main():
     parser.add_argument("--attacker_base_model", default=None)
     parser.add_argument("--attacker_server_url", default=None,
                         help="vLLM URL for attacker (if externally served)")
+    parser.add_argument("--attacker_served_model", default=None,
+                        help="Model name exposed by the attacker vLLM server")
 
     # Target model
     parser.add_argument("--target_model", default="gpt-4o-mini-2024-07-18")
@@ -849,6 +852,7 @@ def main():
         target_max_tokens=args.target_max_tokens,
         target_defense=args.target_defense,
         attacker_server_url=args.attacker_server_url,
+        attacker_served_model=args.attacker_served_model,
         attacker_base_model=args.attacker_base_model,
         format_prompt=args.format_prompt,
         max_tokens=args.max_tokens,
