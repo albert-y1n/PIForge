@@ -14,9 +14,7 @@ build/
 env/
 
 # Checkpoints & model weights
-checkpoints/*
-!checkpoints/README.md
-!checkpoints/models.json
+checkpoints/
 *.bin
 *.safetensors
 *.pt
