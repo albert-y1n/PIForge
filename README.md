@@ -1,8 +1,15 @@
-# PIForge: An Open Framework for RL-based Prompt Injection Red Teaming
+<h1 align="center">PIForge</h1>
 
-[**Code**](https://github.com/albert-y1n/PIForge) · [**Attacker checkpoints**](https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4) · [**PISmith paper**](https://arxiv.org/abs/2603.13026)
+<p align="center"><strong>An Open Framework for RL-based Prompt Injection Red Teaming</strong></p>
 
-PIForge brings the [PISmith](https://github.com/albert-y1n/PISmith/tree/dev) RL prompt-injection framework and the [Climbing the Hill curriculum and transfer workflows](docs/curriculum.md) into one repository. It covers attacker training and evaluation on PIArena, AgentDojo, AgentDyn, InjecAgent, and IPI Arena OS. The PISmith paper reports the research results below; the curriculum scripts provide additional AgentDyn and AgentDojo workflows.
+<p align="center">
+  💻 <a href="https://github.com/albert-y1n/PIForge">Code</a> ·
+  🤗 <a href="https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4">Models &amp; Checkpoints</a> ·
+  📜 <a href="https://arxiv.org/abs/2603.13026">Paper</a> ·
+  📖 <a href="docs/curriculum.md">Curriculum Guide</a>
+</p>
+
+PIForge brings the [PISmith](https://github.com/albert-y1n/PISmith/tree/dev) RL prompt-injection framework and the [Climbing the Hill curriculum and transfer workflows](docs/curriculum.md) into one repository. It covers attacker training and evaluation on PIArena, AgentDojo, AgentDyn, InjecAgent, and IPI Arena OS. See the [PISmith paper](https://arxiv.org/abs/2603.13026) for research results.
 
 ## News
 
@@ -12,14 +19,13 @@ PIForge brings the [PISmith](https://github.com/albert-y1n/PISmith/tree/dev) RL 
 
 | Area | Entry point | Purpose |
 |---|---|---|
-| Training | `train.py`, `configs/`, `scripts/train_*.sh` | RL attacker training across five benchmarks |
-| Curriculum | `scripts/train_curriculum.sh`, `scripts/train_agentdyn_curriculum.sh`, `scripts/train_agentdyn_transfer.sh` | Sequential targets and transfer training |
-| Evaluation | `eval/`, `scripts/eval_*.sh`, `scripts/evaluate.sh` | Benchmark and unified AgentDyn/AgentDojo evaluation |
-| Checkpoints | `checkpoints/models.json`, `scripts/download_attacker.py` | Released attacker catalog and download tool |
+| Training | `train.py`, `core/`, `configs/` | RL attacker training |
+| Benchmarks | `benchmarks/`, `defenses/` | Task adapters and target defenses |
+| Evaluation | `eval/`, `scripts/eval_*.sh` | Benchmark evaluation |
 
 ## Released attacker checkpoints
 
-All public attacker models are grouped in the [PIForge collection](https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4). The GitHub [checkpoint catalog](checkpoints/README.md) and [machine-readable manifest](checkpoints/models.json) list every model. Weights stay on Hugging Face because each full checkpoint is about 8 GB; the repository provides direct links and a download tool.
+All public attacker models are grouped in the [PIForge collection](https://huggingface.co/collections/AlbertYin/piforge-attackers-6ab881634edba2b4387942d4). The GitHub [checkpoint catalog](checkpoints/README.md) and [machine-readable manifest](checkpoints/models.json) list every model. Full weights are hosted on Hugging Face; the repository provides direct links and a download tool.
 
 | Benchmark | Target | Hugging Face model |
 |---|---|---|
@@ -62,13 +68,13 @@ Set `OPENAI_API_KEY` for OpenAI-compatible targets, or use `TARGET_PROVIDER=open
 
 ## Environment Setup
 
-PISmith has been tested using Python 3.10 and CUDA Version: 12.9
+The PISmith training environment has been tested with Python 3.10 and CUDA 12.9.
 
 **1. Create a Python 3.10 conda environment**
 
 ```bash
-conda create -n PISmith python=3.10 -y
-conda activate PISmith
+conda create -n piforge python=3.10 -y
+conda activate piforge
 ```
 
 **2. Install dependencies** 
@@ -304,58 +310,3 @@ Use `BEHAVIOR_IDS`, `WAVES`, `TARGET_PROVIDER`, `TARGET_BASE_URL`, and the
 corresponding `JUDGE_*` / `WORLDSIM_*` environment variables for finer control.
 Optional OpenRouter attribution headers can be configured with
 `OPENROUTER_HTTP_REFERER` and `OPENROUTER_APP_NAME`.
-
----
-
-## Experiment Results
-
-### Main Results (vs. Meta-SecAlign-8B, 13 Benchmarks)
-
-PISmith is evaluated against 7 baselines spanning static, search-based, and RL-based attack categories. All RL-based methods report ASR@10 / ASR@1; static and search-based methods report ASR@1.
-
-| Method | Category | Avg. ASR@10 | Avg. ASR@1 |
-|---|---|---|---|
-| Direct | Static | — | 0.04 |
-| Combined | Static | — | 0.07 |
-| TAP | Search-based | — | 0.11 |
-| PAIR | Search-based | — | 0.16 |
-| Strategy | Search-based | — | 0.21 |
-| Vanilla GRPO | RL-based | 0.13 | 0.05 |
-| RL-Hammer | RL-based | 0.70 | 0.48 |
-| **PISmith (Ours)** | **RL-based** | **1.00** | **0.87** |
-
-### Utility–Robustness Trade-off (8 Defenses, Qwen3-4B-Instruct-2507)
-
-PISmith ASR@1 averaged over 13 benchmarks. Utility measures task accuracy without attack.
-
-| Defense | Type | Utility | PISmith ASR@1 |
-|---|---|---|---|
-| No Defense | — | 0.74 | 0.92 |
-| Sandwich | Prevention | 0.74 | 0.91 |
-| Instructional | Prevention | 0.73 | 0.92 |
-| PromptArmor | Prevention | 0.74 | 0.92 |
-| DataFilter | Prevention | 0.63 | 0.49 |
-| PIGuard | Filter | 0.72 | 0.82 |
-| PromptGuard | Filter | 0.66 | 0.89 |
-| DataSentinel | Filter | 0.55 | 0.52 |
-
-> It remains challenging for state-of-the-art defenses to simultaneously achieve high utility (≥0.70) and low ASR (≤0.60), revealing a fundamental utility–robustness trade-off.
-
-### Agentic Settings
-
-#### InjecAgent
-
-| Target Model | Direct ASR@1 | **PISmith ASR@10/1** |
-|---|---|---|
-| Meta-SecAlign-8B | 0.00 | **1.00 / 0.99** |
-| GPT-4o-mini | 0.02 | **1.00 / 0.99** |
-| GPT-4.1-nano | 0.01 | **1.00 / 1.00** |
-| GPT-5-nano | 0.00 | **1.00 / 0.95** |
-
-#### AgentDojo (best static baseline vs. PISmith)
-
-| Target Model | Best Static ASR@1 | **PISmith ASR@10/1** |
-|---|---|---|
-| GPT-4o-mini | 0.23 | **0.78 / 0.62** |
-| GPT-4.1-nano | 0.20 | **0.81 / 0.64** |
-| GPT-5-nano | 0.01 | **0.38 / 0.24** |
