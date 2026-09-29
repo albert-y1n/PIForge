@@ -10,7 +10,7 @@
 
 ---
 
-PIForge is the shared codebase for **[PISmith](https://arxiv.org/abs/2603.13026)** and **Climbing the Hill**. PISmith addresses the sparse reward problem in prompt injection red teaming, helping RL attackers explore and learn from rare successful attacks. Building on PISmith, Climbing the Hill uses curriculum learning to address the cold start problem when red teaming more robust frontier targets.
+PIForge is the shared codebase for **[PISmith](https://arxiv.org/abs/2603.13026)** and **[Climbing the Hill](https://arxiv.org/abs/2609.33628)**. PISmith addresses the sparse reward problem in prompt injection red teaming, helping RL attackers explore and learn from rare successful attacks. Building on PISmith, Climbing the Hill uses curriculum learning to address the cold start problem when red teaming more robust frontier targets.
 
 ## ✨ News
 
@@ -122,7 +122,7 @@ We release our trained attackers in the [PIForge Hugging Face collection](https:
 ## Papers
 
 - [PISmith: Reinforcement Learning-based Red Teaming for Prompt Injection Defenses](https://arxiv.org/abs/2603.13026)
-- Climbing the Hill: Prompt Injection Red-Teaming Against Frontier Models with Curriculum Reinforcement Learning
+- [Climbing the Hill: Prompt Injection Red-Teaming Against Frontier Models with Curriculum Reinforcement Learning](https://arxiv.org/abs/2609.33628)
 
 ## License
 
