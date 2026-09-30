@@ -14,7 +14,7 @@ PIForge is the shared codebase for **[PISmith](https://arxiv.org/abs/2603.13026)
 
 ## ✨ News
 
-- **2026.07** —  We release: [Climbing the Hill: Prompt Injection Red-Teaming Against Frontier Models with Curriculum Reinforcement Learning](https://arxiv.org/abs/2609.33628), a curriculum RL method that solves the cold-start problem in prompt-injection red-teaming, reaching 93.8%/45.0% ASR@10 against GPT-5.6-Luna/GPT-5.6-Terra (vs. 0% for prior RL methods).
+- **2026.09** —  We release: [Climbing the Hill: Prompt Injection Red-Teaming Against Frontier Models with Curriculum Reinforcement Learning](https://arxiv.org/abs/2609.33628), a curriculum RL method that solves the cold-start problem in prompt-injection red-teaming, reaching 93.8%/45.0% ASR@10 against GPT-5.6-Luna/GPT-5.6-Terra (vs. 0% for prior RL methods).
 - **2026.07** — [PISmith](https://arxiv.org/abs/2603.13026) was accepted to COLM 2026.
 
 ## What's here
